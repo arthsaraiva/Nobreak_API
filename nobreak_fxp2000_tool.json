@@ -1,0 +1,153 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Manual Nobreak FXP-2000",
+    "description": "Extração de informações técnicas do Manual do Nobreak FXP-2000",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://nobreak-api-production.up.railway.app/api"
+    }
+  ],
+  "paths": {
+    "/listar_secoes": {
+      "get": {
+        "operationId": "listar_secoes_manual",
+        "summary": "Nobreak FXP-2000 - Lista seções",
+        "description": "Lista todas as seções disponíveis no manual técnico do Nobreak FXP-2000.",
+        "responses": {
+          "200": {
+            "description": "Retorna a lista de seções do manual",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response_lista_secoes"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response_status_code_404"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/consultar_secao": {
+      "post": {
+        "operationId": "consultar_secao_manual",
+        "summary": "Nobreak FXP-2000 - Consulta seção",
+        "description": "Retorna o conteúdo de uma seção específica do manual técnico do Nobreak FXP-2000 com base no nome da seção informada.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/request_consulta_secao"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna o conteúdo da seção solicitada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response_conteudo_secao"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response_status_code_400"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response_status_code_404"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "response_lista_secoes": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "secao": {
+                  "type": "string",
+                  "example": "Características Técnicas"
+                }
+              }
+            }
+          }
+        }
+      },
+      "request_consulta_secao": {
+        "type": "object",
+        "properties": {
+          "secao": {
+            "type": "string",
+            "example": "Manutenção da Bateria"
+          }
+        }
+      },
+      "response_conteudo_secao": {
+        "type": "object",
+        "properties": {
+          "secao": {
+            "type": "string",
+            "example": "Manutenção da Bateria"
+          },
+          "conteudo": {
+            "type": "string",
+            "example": "Utilize apenas baterias seladas 12V 9Ah conectadas em série (24V)..."
+          }
+        }
+      },
+      "response_status_code_404": {
+        "type": "object",
+        "properties": {
+          "detail": {
+            "type": "string",
+            "example": "Not found"
+          }
+        }
+      },
+      "response_status_code_400": {
+        "type": "object",
+        "properties": {
+          "detail": {
+            "type": "string",
+            "example": "Bad request"
+          }
+        }
+      }
+    }
+  }
+}
